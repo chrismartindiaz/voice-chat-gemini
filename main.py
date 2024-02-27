@@ -103,8 +103,9 @@ if user_prompt or len(audio):
     st.chat_message("user").markdown(user_prompt)
 
     # Evalúa la pregunta para determinar la respuesta
-    if "musica" in user_prompt.lower() or "cancion" in user_prompt.lower():
-        # Si la pregunta está relacionada con la música, envía el mensaje a Gemini-Pro para que responda
+    music_keywords = ["musica", "cancion", "artista", "genero", "decada", "estado de animo"]
+    if any(keyword in user_prompt.lower() for keyword in music_keywords):
+        # Si la pregunta contiene palabras clave relacionadas con la música, envía el mensaje a Gemini-Pro para que responda
         gemini_response = st.session_state.chat_session.send_message(user_prompt)
         # Muestra la respuesta de Gemini
         with st.chat_message("assistant"):
@@ -122,6 +123,6 @@ if user_prompt or len(audio):
                     gemini_response.metadata["audio_path"] = tempname
                     st.session_state.chat_session.history.append(gemini_response)
     else:
-        # Si la pregunta no está relacionada con la música, devuelve un mensaje de advertencia
-        non_music_prompt_response = "Lo siento, pero solo puedo responder preguntas relacionadas con la música. ¿Puedes hacerme otra pregunta musical?"
+        # Si la pregunta no contiene palabras clave relacionadas con la música, devuelve un mensaje de advertencia
+        non_music_prompt_response = "Lo siento, pero solo puedo responder preguntas relacionadas con la música. ¿Puedes hacerme una pregunta musical?"
         st.chat_message("assistant").markdown(non_music_prompt_response)
