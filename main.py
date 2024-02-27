@@ -96,6 +96,14 @@ if user_prompt or len(audio):
 
     # Añade el mensaje del usuario
     st.chat_message("user").markdown(user_prompt)
+    # Establecemos el meta_prompt
+    meta_prompt = "Preséntate como 'BeatBuddy' un chatbot muy interactivo que se encarga de recomendar canciones relacionadas con artistas, géneros, décadas musicales, estados de ánimo y preguntas musicales, en caso de que se te realice cualquier otra pregunta que no tenga que ver con la música devolverás un mensaje de 'Lo siento, pero sólo puedo responder prompts relacionados con la música...'."
+
+    # Envía el mensaje a Gemini-Pro para que responda
+    if es_relacionado_con_musica(user_prompt):
+        gemini_response = st.session_state.chat_session.send_message(user_prompt, meta_prompt=meta_prompt)
+    else:
+        gemini_response = "Lo siento, pero sólo puedo responder prompts relacionados con la música..."
 
     # Envía el mensaje a Gemini-Pro para que responda
     gemini_response = st.session_state.chat_session.send_message(user_prompt)
