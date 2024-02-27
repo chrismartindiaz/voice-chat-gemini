@@ -119,4 +119,8 @@ if user_prompt or len(audio):
                 autoplay_audio(tempname)
                 # Almacena la ruta del archivo de audio en los metadatos del mensaje
                 gemini_response.metadata["audio_path"] = tempname
-                st.session_state.chat_session.history[-1] = gemini_response  # Actualiza el historial
+                # Actualiza el historial si el último mensaje es un mensaje de voz
+                if st.session_state.chat_session.history and st.session_state.chat_session.history[-1].role == "assistant" and "audio_path" in st.session_state.chat_session.history[-1].metadata:
+                    st.session_state.chat_session.history[-1] = gemini_response
+                else:
+                    st.session_state.chat_session.history.append(gemini_response)
