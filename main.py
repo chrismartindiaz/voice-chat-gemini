@@ -87,6 +87,11 @@ for message in st.session_state.chat_session.history:
     with st.chat_message(translate_role_for_streamlit(message.role)):
         st.markdown(message.parts[0].text)
 
+# Inicio de la conversación con el mensaje de presentación
+if not st.session_state.chat_session.history:
+    beatbuddy_intro = "¡Hola! Soy BeatBuddy, un chatbot interactivo que se especializa en recomendar canciones relacionadas con artistas, géneros, décadas musicales, estados de ánimo y preguntas musicales. ¿En qué puedo ayudarte hoy?"
+    st.chat_message("assistant").markdown(beatbuddy_intro)
+
 # Input para el mensaje del usuario
 user_prompt = st.chat_input("Haz tu pregunta musical...")
 if user_prompt or len(audio):
@@ -97,18 +102,26 @@ if user_prompt or len(audio):
     # Añade el mensaje del usuario
     st.chat_message("user").markdown(user_prompt)
 
-    # Envía el mensaje a Gemini-Pro para que responda
-    gemini_response = st.session_state.chat_session.send_message(user_prompt)
-
-    # Muestra la respuesta de Gemini
-    with st.chat_message("assistant"):
-        st.markdown(gemini_response.text)
-        if voice:
-            if lang == 'es':
-                tts = gTTS(gemini_response.text, lang='es', tld="cl")
-            else:
-                tts = gTTS(gemini_response.text, lang=lang)
-            with NamedTemporaryFile(suffix=".mp3") as temp:
-                tempname = temp.name
-                tts.save(tempname)
-                autoplay_audio(tempname)
+    # Evalúa la pregunta para determinar la respuesta
+    if "musica" in user_prompt.lower() or "cancion" in user_prompt.lower():
+        # Si la pregunta está relacionada con la música, envía el mensaje a Gemini-Pro para que responda
+        gemini_response = st.session_state.chat_session.send_message(user_prompt)
+        # Muestra la respuesta de Gemini
+        with st.chat_message("assistant"):
+            st.markdown(gemini_response.text)
+            if voice:
+                if lang == 'es':
+                    tts = gTTS(gemini_response.text, lang='es', tld="cl")
+                else:
+                    tts = gTTS(gemini_response.text, lang=lang)
+                with NamedTemporaryFile(suffix=".mp3") as temp:
+                    tempname = temp.name
+                    tts.save(tempname)
+                    autoplay_audio(tempname)
+                    # Almacena la ruta del archivo de audio en los metadatos del mensaje
+                    gemini_response.metadata["audio_path"] = tempname
+                    st.session_state.chat_session.history.append(gemini_response)
+    else:
+        # Si la pregunta no está relacionada con la música, devuelve un mensaje de advertencia
+        non_music_prompt_response = "Lo siento, pero solo puedo responder preguntas relacionadas con la música. ¿Puedes hacerme otra pregunta musical?"
+        st.chat_message("assistant").markdown(non_music_prompt_response)
