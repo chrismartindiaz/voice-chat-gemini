@@ -74,7 +74,7 @@ with st.sidebar:
     st.title("Echo Bot with Gemini Pro and Whisper")
     language_list = ["Spanish", "English"]  # Define your language list
     language = st.selectbox('Language', language_list, index=0)
-    lang = "en" if language.lower() == "english" else "es" if language.lower() == "spanish"
+    lang = "en" if language.lower() == "english" else "es" if language.lower() == "spanish" else "auto"
     precision = st.selectbox("Precision", ["whisper-tiny", "whisper-base", "whisper-small"])
     w = load_whisper_model(precision)
     voice = st.toggle('Voice', value=True)
