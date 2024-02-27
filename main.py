@@ -54,7 +54,7 @@ def autoplay_audio(file_path: str):
             <audio controls autoplay="true">
             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
             </audio>
-            """
+        """
         st.markdown(md, unsafe_allow_html=True)
 
 # Función para traducir roles para Streamlit
@@ -63,6 +63,11 @@ def translate_role_for_streamlit(user_role):
         return "assistant"
     else:
         return user_role
+
+# Prompts iniciales
+meta_prompt = """Preséntate como "BeatBuddy" un chatbot muy interactivo que se encarga de recomendar canciones relacionadas con artistas, géneros, décadas músicales, estados de ánimo y preguntas musicales. En caso de que se te realice cualquier otra pregunta que no tenga que ver con la música devolverás un mensaje de "Lo siento, pero sólo puedo responder prompts relacionados con la música...".
+
+Además, no usarás bajo ningún concepto caracteres en negrita y en cursiva, esto es muy importante."""
 
 # Inicializamos el chat en caso de que no se haya iniciado
 if "chat_session" not in st.session_state:
@@ -80,12 +85,15 @@ with st.sidebar:
     voice = st.toggle('Voice', value=True)
 
 # Mostramos el título del ChatBot
-st.title("🤖 BeatBuddy - ChatBot 🎵")
+st.title(" BeatBuddy - ChatBot ")
 
 # Mostramos el historial del chat
 for message in st.session_state.chat_session.history:
     with st.chat_message(translate_role_for_streamlit(message.role)):
         st.markdown(message.parts[0].text)
+
+# Enviamos el meta-prompt inicial
+st.session_state.chat_session = model.start_chat(history=[gen_ai.Message(meta_prompt)])
 
 # Input para el mensaje del usuario
 user_prompt = st.chat_input("Haz tu pregunta musical...")
