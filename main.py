@@ -72,7 +72,7 @@ if "chat_session" not in st.session_state:
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
     st.title("Echo Bot with Gemini Pro and Whisper")
-    language_list = ["Automatic", "English", "Spanish"]  # Define your language list
+    language_list = ["Spanish", "English"]  # Define your language list
     language = st.selectbox('Language', language_list, index=0)
     lang = "en" if language.lower() == "english" else "es" if language.lower() == "spanish" else "auto"
     precision = st.selectbox("Precision", ["whisper-tiny", "whisper-base", "whisper-small"])
@@ -84,16 +84,11 @@ st.title("🤖 BeatBuddy - ChatBot 🎵")
 
 # Mostramos el historial del chat
 for message in st.session_state.chat_session.history:
-    if message.role == "assistant" and "audio_path" in message.metadata:
-        # Si el mensaje es de audio, mostramos el control de reproducción de audio
-        st.audio(message.metadata["audio_path"], format="audio/mp3", start_time=0)
-    else:
-        # Si no es un mensaje de audio, mostramos el mensaje de texto
-        with st.chat_message(translate_role_for_streamlit(message.role)):
-            st.markdown(message.parts[0].text)
+    with st.chat_message(translate_role_for_streamlit(message.role)):
+        st.markdown(message.parts[0].text)
 
 # Input para el mensaje del usuario
-user_prompt = st.chat_input("Ask Gemini-Pro...")
+user_prompt = st.chat_input("Haz tu pregunta musical...")
 if user_prompt or len(audio):
     # Si viene del grabador de audio, transcribe el mensaje con Whisper
     if len(audio) > 0:
@@ -117,10 +112,3 @@ if user_prompt or len(audio):
                 tempname = temp.name
                 tts.save(tempname)
                 autoplay_audio(tempname)
-                # Almacena la ruta del archivo de audio en los metadatos del mensaje
-                gemini_response.metadata["audio_path"] = tempname
-                # Actualiza el historial si el último mensaje es un mensaje de voz
-                if st.session_state.chat_session.history and st.session_state.chat_session.history[-1].role == "assistant" and "audio_path" in st.session_state.chat_session.history[-1].metadata:
-                    st.session_state.chat_session.history[-1] = gemini_response
-                else:
-                    st.session_state.chat_session.history.append(gemini_response)
