@@ -78,7 +78,7 @@ Puedo recomendarte canciones relacionadas con artistas, géneros, décadas, esta
 
 # Inicializamos el chat
 if "chat_session" not in st.session_state:
-    message = model.create_message(meta_prompt)
+    message = gen_ai.Message(meta_prompt)  # Create Message object directly
     chat_session = model.start_chat(history=[message])
     st.session_state["chat_session"] = chat_session
 
