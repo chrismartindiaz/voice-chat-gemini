@@ -72,9 +72,9 @@ if "chat_session" not in st.session_state:
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
     st.title("Echo Bot with Gemini Pro and Whisper")
-    language_list = ["Automatic", "English", "Spanish"]  # Define your language list
+    language_list = ["Spanish", "English"]  # Define your language list
     language = st.selectbox('Language', language_list, index=0)
-    lang = "en" if language.lower() == "english" else "es" if language.lower() == "spanish" else "auto"
+    lang = "es" if language.lower() == "spanish" else "en" if language.lower() == "english"
     precision = st.selectbox("Precision", ["whisper-tiny", "whisper-base", "whisper-small"])
     w = load_whisper_model(precision)
     voice = st.toggle('Voice', value=True)
@@ -88,7 +88,7 @@ for message in st.session_state.chat_session.history:
         st.markdown(message.parts[0].text)
 
 # Input para el mensaje del usuario
-user_prompt = st.chat_input("Ask Gemini-Pro...")
+user_prompt = st.chat_input("Haz tu pregunta musical...")
 if user_prompt or len(audio):
     # Si viene del grabador de audio, transcribe el mensaje con Whisper
     if len(audio) > 0:
