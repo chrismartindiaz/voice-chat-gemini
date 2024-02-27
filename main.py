@@ -122,7 +122,3 @@ if user_prompt or len(audio):
                     # Almacena la ruta del archivo de audio en los metadatos del mensaje
                     gemini_response.metadata["audio_path"] = tempname
                     st.session_state.chat_session.history.append(gemini_response)
-    else:
-        # Si la pregunta no contiene palabras clave relacionadas con la música, devuelve un mensaje de advertencia
-        non_music_prompt_response = "Lo siento, pero solo puedo responder preguntas relacionadas con la música. ¿Puedes hacerme una pregunta musical?"
-        st.chat_message("assistant").markdown(non_music_prompt_response)
