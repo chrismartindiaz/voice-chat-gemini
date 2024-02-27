@@ -71,7 +71,9 @@ Además, no usarás bajo ningún concepto caracteres en negrita y en cursiva, es
 
 # Inicializamos el chat en caso de que no se haya iniciado
 if "chat_session" not in st.session_state:
-    st.session_state.chat_session = model.start_chat(history=[gen_ai.Message(meta_prompt)])
+    meta_prompt_message = gen_ai.Message()
+    meta_prompt_message.text = meta_prompt
+    st.session_state.chat_session = model.start_chat(history=[meta_prompt_message])
 
 # Streamlit
 with st.sidebar:
