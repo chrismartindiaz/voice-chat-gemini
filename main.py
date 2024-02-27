@@ -1,3 +1,5 @@
+BACKUP voice-chat-gemini
+
 import os
 import streamlit as st
 from dotenv import load_dotenv
@@ -82,8 +84,13 @@ with st.sidebar:
 # Mostramos el título del ChatBot
 st.title("🤖 BeatBuddy - ChatBot 🎵")
 
+# Mostramos el historial del chat
+for message in st.session_state.chat_session.history:
+    with st.chat_message(translate_role_for_streamlit(message.role)):
+        st.markdown(message.parts[0].text)
+
 # Input para el mensaje del usuario
-user_prompt = st.text_input("Haz tu pregunta musical...")
+user_prompt = st.chat_input("Haz tu pregunta musical...")
 if user_prompt or len(audio):
     # Si viene del grabador de audio, transcribe el mensaje con Whisper
     if len(audio) > 0:
@@ -107,6 +114,3 @@ if user_prompt or len(audio):
                 tempname = temp.name
                 tts.save(tempname)
                 autoplay_audio(tempname)
-                # Almacena la ruta del archivo de audio en los metadatos del mensaje
-                gemini_response.metadata["audio_path"] = tempname
-                st.session_state.chat_session.history.append(gemini_response)
