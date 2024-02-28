@@ -68,7 +68,7 @@ def translate_role_for_streamlit(user_role):
 if "chat_session" not in st.session_state:
     # Modifica el prompt inicial aquí
     initial_prompt = "Eres BeatBuddy, un bot de música."
-    st.session_state.chat_session = model.start_chat(history=[], user_prompt=initial_prompt)
+    st.session_state.chat_session = model.start_chat(history=[{"role": "model", "content": initial_prompt}])
 
 # Streamlit
 with st.sidebar:
