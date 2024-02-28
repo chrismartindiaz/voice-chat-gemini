@@ -68,10 +68,6 @@ def translate_role_for_streamlit(user_role):
 if "chat_session" not in st.session_state:
     st.session_state.chat_session = model.start_chat(history=[])
 
-# Simulamos el mensaje inicial como si fuera un mensaje de usuario
-initial_prompt_message = gen_ai.ChatMessage(role="user", parts=[gen_ai.TextPart(text=initial_prompt)])
-st.session_state.chat_session.history.append(initial_prompt_message)
-
 # Streamlit
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
