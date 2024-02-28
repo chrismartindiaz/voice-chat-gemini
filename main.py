@@ -91,9 +91,10 @@ st.title("🤖 BeatBuddy - ChatBot 🎵")
 
 # Mostramos el historial del chat
 for message in st.session_state.chat_session.history:
-    # Utilizamos st.expander() para ocultar/mostrar el mensaje de presentación
-    with st.expander(translate_role_for_streamlit(message.role), expanded=(message.text != intro_message)):
+    # Utilizamos st.beta_expander() para ocultar/mostrar el mensaje de presentación
+    with st.beta_expander(translate_role_for_streamlit(message.role), expanded=(message.text != intro_message)):
         st.markdown(message.parts[0].text)
+
 
 # Input para el mensaje del usuario
 user_prompt = st.chat_input("Haz tu pregunta musical...")
