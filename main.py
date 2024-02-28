@@ -25,48 +25,14 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 gen_ai.configure(api_key=GOOGLE_API_KEY)
 model = gen_ai.GenerativeModel('gemini-pro')
 
-# Cargar el modelo de Whisper
-@st.cache_resource
-def load_whisper_model(precision):
-    if precision == "whisper-tiny":
-        whisper_model = Whisper('tiny')
-    elif precision == "whisper-base":
-        whisper_model = Whisper('base')
-    else:
-        whisper_model = Whisper('small')
-    return whisper_model
-
-# Función para transcribir audio con Whisper
-def inference(audio, lang, w_model):
-    with NamedTemporaryFile(suffix=".mp3") as temp:
-        with open(f"{temp.name}", "wb") as f:
-            f.write(audio.export().read())
-        result = w_model.transcribe(f"{temp.name}", lang=lang)
-        text = w_model.extract_text(result)
-    return text[0]
-
-# Función para reproducir audio en Streamlit
-def autoplay_audio(file_path: str):
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio controls autoplay="true">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-            """
-        st.markdown(md, unsafe_allow_html=True)
-
-# Función para traducir roles para Streamlit
-def translate_role_for_streamlit(user_role):
-    if user_role == "model":
-        return "assistant"
-    else:
-        return user_role
+# Agregamos el mensaje inicial
+initial_prompt = """Preséntate como "BeatBuddy" un chatbot muy interactivo que se encarga de recomendar canciones relacionadas con artistas, géneros, décadas músicales, estados de ánimo y preguntas musicales, sólo podrás responder preguntas relacionadas con la música, artistas, instrumentos... Además, no usarás bajo ningún concepto caracteres en negrita y en cursiva, esto es muy importante."""
 
 # Inicializamos el chat en caso de que no se haya iniciado
 if "chat_session" not in st.session_state:
-    st.session_state.chat_session = model.start_chat(history=[])
+    st.session_state.chat_session = model.start_chat(history=[initial_prompt])
+
+# Resto del código...
 
 # Streamlit
 with st.sidebar:
