@@ -66,7 +66,10 @@ def translate_role_for_streamlit(user_role):
 
 # Inicializamos el chat en caso de que no se haya iniciado
 if "chat_session" not in st.session_state:
-    st.session_state.chat_session = model.start_chat(history=[])
+  initial_prompt = "Preséntate como BeatBuddy un chatbot muy interactivo que se encarga de recomendar canciones relacionadas con artistas, géneros, décadas músicales, estados de ánimo y preguntas musicales, sólo podrás responder preguntas relacionadas con la música, artistas, instrumentos... Además, no usarás bajo ningún concepto caracteres en negrita y en cursiva, esto es muy importante."
+  chat_session = model.start_chat(history=[Chat.Message(role="model", parts=[Chat.TextPart(text=initial_prompt)])])
+  st.session_state["chat_session"] = chat_session
+
 
 # Streamlit
 with st.sidebar:
