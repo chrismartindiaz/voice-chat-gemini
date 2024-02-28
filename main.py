@@ -2,6 +2,7 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 import google.generativeai as gen_ai
+from google.generativeai.gemini_pro import Chat
 import base64
 from tempfile import NamedTemporaryFile
 from gtts import gTTS
