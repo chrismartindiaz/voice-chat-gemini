@@ -71,7 +71,7 @@ if "chat_session" not in st.session_state:
 # Streamlit
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
-    st.title("Echo Bot with Gemini Pro and Whisper")
+    st.title("Voice ChatBot with Gemini Pro and Whisper")
     language_list = ["Spanish", "English"]  # Define your language list
     language = st.selectbox('Language', language_list, index=0)
     lang = "en" if language.lower() == "english" else "es" if language.lower() == "spanish" else "auto"
