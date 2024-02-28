@@ -66,11 +66,7 @@ def translate_role_for_streamlit(user_role):
 
 # Inicializamos el chat en caso de que no se haya iniciado
 if "chat_session" not in st.session_state:
-    initial_prompt = "Eres BeatBuddy, un bot de música."
-    initial_message = {"role": "model", "content": [{"text": initial_prompt}]}
-    st.session_state.chat_session = model.start_chat(history=initial_message)
-
-
+    st.session_state.chat_session = model.start_chat(history=[])
 
 # Streamlit
 with st.sidebar:
@@ -85,10 +81,6 @@ with st.sidebar:
 
 # Mostramos el título del ChatBot
 st.title("🤖 BeatBuddy - ChatBot 🎵")
-
-# Agrega una respuesta inicial del bot al historial
-with st.chat_message("assistant"):
-    st.markdown("¡Hola! Soy BeatBuddy, un bot de música. ¿En qué puedo ayudarte hoy?")
 
 # Mostramos el historial del chat
 for message in st.session_state.chat_session.history:
