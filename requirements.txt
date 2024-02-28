@@ -1,5 +1,5 @@
 python-dotenv==1.0.1
-google-generativeai
+google-generativeai==0.3.2
 streamlit==1.30.0
 streamlit-audiorecorder
 git+https://github.com/johnryan465/whispercpp.py
