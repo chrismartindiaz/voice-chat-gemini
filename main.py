@@ -94,7 +94,7 @@ st.title("🤖 BeatBuddy - ChatBot 🎵")
 # Mostramos el historial del chat
 for message in st.session_state.chat_session.history:
     with st.chat_message(translate_role_for_streamlit(message.role)):
-        st.markdown(message.parts[0].text)
+        st.markdown(message.parts[1].text)
 
 # Input para el mensaje del usuario
 user_prompt = st.chat_input("Haz tu pregunta musical...")
