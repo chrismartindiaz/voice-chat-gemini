@@ -65,9 +65,7 @@ def translate_role_for_streamlit(user_role):
         return user_role
 
 # Inicializamos el chat en caso de que no se haya iniciado
-if "chat_session" not in st.session_state:
-    st.session_state.chat_session = model.start_chat(history=[])
-    
+if "chat_session" not in st.session_state:    
     # Enviamos el mensaje de presentación al iniciar el chat
     intro_message = ("Preséntate como 'BeatBuddy' un chatbot muy interactivo que se encarga de recomendar canciones "
                      "relacionadas con artistas, géneros, décadas músicales, estados de ánimo y preguntas musicales, "
@@ -77,6 +75,8 @@ if "chat_session" not in st.session_state:
     st.markdown(""" <style> .st-emotion-cache-janbn0 { display: none; } </style> """, unsafe_allow_html=True) 
     
     st.session_state.chat_session.send_message(intro_message)
+
+    st.session_state.chat_session = model.start_chat(history=[])
     
 # Streamlit
 with st.sidebar:
