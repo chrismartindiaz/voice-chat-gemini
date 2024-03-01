@@ -76,7 +76,7 @@ if "chat_session" not in st.session_state:
                      " Además, no se usará negrita ni cursiva para las respuestas, esto es muy importante.")
         
     st.session_state.chat_session.send_message(intro_message)
-    
+
 # Streamlit
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
@@ -92,8 +92,11 @@ with st.sidebar:
 st.title("🤖 BeatBuddy - ChatBot 🎵")
 
 # Mostramos el historial del chat
-for message in st.session_state.chat_session.history:
+for i, message in enumerate(st.session_state.chat_session.history):
     with st.chat_message(translate_role_for_streamlit(message.role)):
+        # Ocultar el primer prompt de presentación
+        if i == 0:
+            st.markdown(""" <style> .st-emotion-cache-janbn0 { display: none; } </style> """, unsafe_allow_html=True)
         st.markdown(message.parts[0].text)
 
 # Input para el mensaje del usuario
