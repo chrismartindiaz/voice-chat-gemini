@@ -9,10 +9,6 @@ from audiorecorder import audiorecorder
 from whispercpp import Whisper
 import whisper
 
-#
-st.markdown(""" <style> .st-emotion-cache-janbn0 { display: none; } </style> """, unsafe_allow_html=True) 
-
-
 # Cargamos las variables de entorno
 load_dotenv()
 
@@ -22,6 +18,8 @@ st.set_page_config(
     page_icon=":brain:",  # Favicon emoji
     layout="centered",  # Page layout option
 )
+
+st.markdown(""" <style> .st-emotion-cache-janbn0 { display: none; } </style> """, unsafe_allow_html=True) 
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
