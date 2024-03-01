@@ -94,10 +94,11 @@ st.title("🤖 BeatBuddy - ChatBot 🎵")
 # Mostramos el historial del chat
 for i, message in enumerate(st.session_state.chat_session.history):
     with st.chat_message(translate_role_for_streamlit(message.role)):
-        # Ocultar el primer prompt de presentación
-        if i == 0:
-            st.markdown(""" <style> .st-emotion-cache-janbn0 { display: none; } </style> """, unsafe_allow_html=True)
-        st.markdown(message.parts[0].text)
+        # Ocultar el contenido del primer prompt de presentación
+        if i == 0 and message.role == "model":
+            st.empty()
+        else:
+            st.markdown(message.parts[0].text)
 
 # Input para el mensaje del usuario
 user_prompt = st.chat_input("Haz tu pregunta musical...")
