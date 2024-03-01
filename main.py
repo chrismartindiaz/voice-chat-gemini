@@ -9,6 +9,10 @@ from audiorecorder import audiorecorder
 from whispercpp import Whisper
 import whisper
 
+#
+st.markdown(""" <style> .st-emotion-cache-janbn0 { display: none; } </style> """, unsafe_allow_html=True) 
+
+
 # Cargamos las variables de entorno
 load_dotenv()
 
