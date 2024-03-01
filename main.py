@@ -96,7 +96,7 @@ for i, message in enumerate(st.session_state.chat_session.history):
     with st.chat_message(translate_role_for_streamlit(message.role)):
         # Ocultar el contenido del primer prompt de presentación
         if i == 0 and message.role == "model":
-            st.empty()
+            st.markdown("")  # Se agrega un espacio en blanco para que no se muestre nada
         else:
             st.markdown(message.parts[0].text)
 
