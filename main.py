@@ -100,17 +100,21 @@ user_text_prompt = st.chat_input("Haz tu pregunta musical...")
 # Si viene del grabador de audio, transcribe el mensaje con Whisper
 if audio_message:
     text_message = audio_message
-    st.chat_message("user").markdown(audio_message)
 
 # Si se ingresó un mensaje de texto, utilizar ese mensaje
 elif user_text_prompt:
     text_message = user_text_prompt
-    st.chat_message("user").markdown(user_text_prompt)
 
 # Procesar el mensaje del usuario solo si hay un mensaje
 if text_message:
+    # Agregar el mensaje al historial
+    st.session_state.chat_session.history.append(gen_ai.Message(text_message, role="user"))
+
     # Envía el mensaje a Gemini-Pro para que responda
     gemini_response = st.session_state.chat_session.send_message(text_message)
+
+    # Agregar la respuesta de Gemini al historial
+    st.session_state.chat_session.history.append(gen_ai.Message(gemini_response.text, role="assistant"))
 
     # Muestra la respuesta de Gemini
     with st.chat_message("assistant"):
@@ -125,3 +129,8 @@ if text_message:
                 tempname = temp.name
                 tts.save(tempname)
                 autoplay_audio(tempname)
+
+# Mostrar el historial de mensajes
+for message in st.session_state.chat_session.history:
+    with st.chat_message(translate_role_for_streamlit(message.role)):
+        st.markdown(message.parts[0].text)
